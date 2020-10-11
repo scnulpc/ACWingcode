@@ -26,3 +26,35 @@ int main()
     return 0;
     
 }
+
+
+//优化思路：f[i][j] 存储的数冗余, f[i]只与f[i-1]有关，用一行数组来表示价值状态就行
+#include<iostream>
+#include<algorithm>
+using namespace std;
+int n,m;
+const int N = 1005;
+int v[N],w[N];
+int f[N]; //f[i][j] 考虑前i个物体，容量为j的条件下的最大价值
+int main()
+{
+    cin>>n>>m;
+    for(int i=1;i<=n;i++)cin>>v[i]>>w[i];
+    
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=m;j>=0;j--)
+        {
+            //容量不够装第i个物体,价值状态与上一轮一样f[j] = f[j-1]
+            if(j>=v[i])//够装，比较装与不装那个价值大
+            {
+                f[j]= max(f[j],f[j-v[i]]+w[i]);
+            }
+        }
+    }
+    
+    cout<<f[m]<<endl;
+    return 0;
+    
+}
+
